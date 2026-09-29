@@ -1,0 +1,770 @@
+<section class="landing-block g-pt-0 g-pb-0 g-pl-0 g-pr-0">
+
+<style>
+    .thr-tool-wrapper {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #333;
+        line-height: 1.5;
+        box-sizing: border-box;
+        background-color: #f9fafb;
+        padding: 20px;
+        border-radius: 12px;
+    }
+    .thr-tool-wrapper * {
+        box-sizing: border-box;
+    }
+    .thr-card {
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+    .thr-header {
+        background-color: #1d4ed8;
+        color: white;
+        padding: 24px;
+    }
+    .thr-header h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
+    }
+    .thr-header p {
+        margin: 8px 0 0 0;
+        color: #dbeafe;
+        font-size: 14px;
+    }
+    .thr-input-section {
+        padding: 24px;
+        border-bottom: 1px solid #e5e7eb;
+        background-color: #f9fafb;
+    }
+    .thr-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+    .thr-controls {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .thr-input {
+        flex-grow: 1;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: monospace;
+        min-width: 200px;
+    }
+    .thr-btn {
+        background-color: #2563eb;
+        color: white;
+        font-weight: 600;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .thr-btn:hover {
+        background-color: #1d4ed8;
+    }
+    .thr-helper-text {
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 8px;
+    }
+    .thr-error {
+        color: #ef4444;
+        font-size: 12px;
+        margin-top: 4px;
+        display: none;
+    }
+    .thr-output {
+        padding: 24px;
+        display: none;
+    }
+    .thr-output.visible {
+        display: block;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    .status-bar {
+        background-color: #eff6ff;
+        border: 1px solid #dbeafe;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .status-title h2 {
+        margin: 0;
+        color: #1e3a8a;
+        font-size: 20px;
+    }
+    .status-title p {
+        margin: 4px 0 0 0;
+        color: #1d4ed8;
+        font-weight: 500;
+    }
+    .days-badge {
+        background-color: white;
+        color: #1e40af;
+        padding: 6px 16px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: bold;
+        border: 1px solid #bfdbfe;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+    @media (max-width: 768px) {
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    .info-box {
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 24px;
+        border-left-width: 4px;
+        border-left-style: solid;
+    }
+    .info-box h3 {
+        margin-top: 0;
+        margin-bottom: 12px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .info-box ul {
+        margin: 0;
+        padding-left: 20px;
+        font-size: 14px;
+    }
+    .info-box li {
+        margin-bottom: 4px;
+    }
+    .box-green { background-color: #f0fdf4; border-left-color: #22c55e; }
+    .box-green h3 { color: #14532d; }
+    .box-red { background-color: #fef2f2; border-left-color: #ef4444; }
+    .box-red h3 { color: #7f1d1d; }
+    .box-purple { background-color: #faf5ff; border-left-color: #a855f7; }
+    .box-purple h3 { color: #581c87; }
+    .box-indigo { background-color: #eef2ff; border-left-color: #6366f1; }
+    .box-indigo h3 { color: #312e81; }
+    .copy-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    .copy-label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #374151;
+    }
+    .btn-copy-small {
+        font-size: 12px;
+        background-color: #e5e7eb;
+        border: none;
+        padding: 4px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-copy-small:hover { background-color: #d1d5db; }
+    textarea.generated-text {
+        width: 100%;
+        height: 200px;
+        padding: 12px;
+        font-family: monospace;
+        font-size: 13px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        background-color: #f9fafb;
+        resize: vertical;
+    }
+    .empty-state {
+        padding: 48px;
+        text-align: center;
+        color: #9ca3af;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Toast notification */
+    .thr-toast {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        background-color: #1e40af;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        z-index: 9999;
+        pointer-events: none;
+    }
+    .thr-toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    select.thr-input { font-family: inherit; flex-grow: 0; min-width: 220px; background:#fff; }
+    .thr-field { display:flex; flex-direction:column; flex:1; min-width:220px; }
+    .thr-row { display:flex; gap:16px; flex-wrap:wrap; margin-top:16px; }
+    .phase-note { font-size:12px; color:#6b7280; margin-top:16px; }
+    .thr-tool-wrapper .thr-norms { margin-top: 10px; font-size: 13px; }
+    .thr-tool-wrapper .thr-norms summary { cursor: pointer; font-weight: 600; color: #6b21a8; }
+    .thr-tool-wrapper .thr-norms p { margin: 6px 0; color: #555; font-size: 12px; }
+    .thr-tool-wrapper .thr-norms table { border-collapse: collapse; width: 100%; }
+    .thr-tool-wrapper .thr-norms th, .thr-tool-wrapper .thr-norms td { border: 1px solid #ddd; padding: 4px 6px; text-align: center; }
+    .thr-tool-wrapper .thr-norms th { background: #f3e8ff; }
+</style>
+
+<div class="thr-tool-wrapper">
+    <div class="thr-card">
+        <div class="thr-header">
+            <h1>PWH Physio Total Hip Replacement (THR) Rehab Protocol</h1>
+            <p>Enter the operation date, surgical approach and patient group to generate goals, interventions, precautions and progression criteria for the current post-op stage.</p>
+        </div>
+
+        <div class="thr-input-section">
+            <label class="thr-label">Operation Date (dd/mm/yyyy)</label>
+            <div class="thr-controls">
+                <input type="text" id="opDate" placeholder="dd/mm/yyyy" maxlength="10" inputmode="numeric" autocomplete="off" class="thr-input">
+                <button id="btnGenerate" class="thr-btn">Enter</button>
+            </div>
+            <p class="thr-helper-text">Format: Day/Month/Year (e.g., 25/01/2024)</p>
+            <p id="dateError" class="thr-error">Invalid date format.</p>
+
+            <div class="thr-row">
+                <div class="thr-field">
+                    <label class="thr-label" for="approach">Surgical approach</label>
+                    <select id="approach" class="thr-input">
+                        <option value="posterior">Posterior</option>
+                        <option value="anterior">Anterior / anterolateral</option>
+                        <option value="lateral">Direct lateral</option>
+                    </select>
+                </div>
+                <div class="thr-field">
+                    <label class="thr-label" for="group">Patient group</label>
+                    <select id="group" class="thr-input">
+                        <option value="geriatric">Geriatric / general</option>
+                        <option value="active">Physically active / young</option>
+                    </select>
+                </div>
+                <div class="thr-field">
+                    <label class="thr-label" for="wb">Weight-bearing (per surgeon)</label>
+                    <select id="wb" class="thr-input">
+                        <option value="none">No restriction stated (protocol default)</option>
+                        <option value="WBAT">WBAT as ordered by surgeon</option>
+                        <option value="PWB">PWB as ordered by surgeon</option>
+                        <option value="TTWB">TTWB / NWB as ordered by surgeon</option>
+                    </select>
+                </div>
+                <div class="thr-field">
+                    <label class="thr-label" for="phaseSel">Phase</label>
+                    <select id="phaseSel" class="thr-input">
+                        <option value="auto">Auto (by operation date)</option>
+                        <option value="p1">Phase 1-Early phase</option>
+                        <option value="p1prog">Phase 1-Progression</option>
+                        <option value="p2">Phase 2-Intermediate strengthening</option>
+                        <option value="p3">Phase 3-Return to recreational sports (active)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="outputContainer" class="thr-output">
+            <div class="status-bar">
+                <div class="status-title">
+                    <h2 id="weekHeader">Post-Operation - Week</h2>
+                    <p id="dayRange">Day range</p>
+                </div>
+                <div class="days-badge">
+                    <span id="daysPastBadge">0 Days Post-Op</span>
+                </div>
+            </div>
+            <div class="info-grid">
+                <div>
+                    <div class="info-box box-green">
+                        <h3>Goals</h3>
+                        <ul id="goalList"></ul>
+                    </div>
+                    <div class="info-box box-red">
+                        <h3>Precautions</h3>
+                        <ul id="precautionList"></ul>
+                    </div>
+                    <div class="info-box box-purple">
+                        <h3>Criteria</h3>
+                        
+                        <ul id="outcomeList"></ul>
+                        <details id="cstNorms" class="thr-norms" style="display:none;">
+                            <summary>Show HK norms: 30-second chair stand test</summary>
+                            <p>Normative values of Hong Kong community-dwelling elder (mean &plusmn; SD). Chair with a 17-inch seat height; arms crossed across chest.</p>
+                            <table>
+                                <tr><th>Age (yr)</th><th>Female</th><th>Male</th></tr>
+                                <tr><td>60&ndash;64</td><td>12.3 &plusmn; 4.2</td><td>14.0 &plusmn; 4.3</td></tr>
+                                <tr><td>65&ndash;69</td><td>11.3 &plusmn; 3.5</td><td>12.9 &plusmn; 4.6</td></tr>
+                                <tr><td>70&ndash;74</td><td>10.1 &plusmn; 3.8</td><td>11.6 &plusmn; 3.3</td></tr>
+                                <tr><td>75&ndash;79</td><td>9.4 &plusmn; 3.4</td><td>11.3 &plusmn; 4.4</td></tr>
+                                <tr><td>80&ndash;84</td><td>9.3 &plusmn; 3.1</td><td>11.1 &plusmn; 4.2</td></tr>
+                                <tr><td>85&ndash;89</td><td>8.3 &plusmn; 2.4</td><td>8.1 &plusmn; 4.0</td></tr>
+                                <tr><td>90+</td><td>7.9 &plusmn; 2.7</td><td>5.8 &plusmn; 2.6</td></tr>
+                            </table>
+                        </details>
+                    </div>
+                </div>
+                <div>
+                    <div class="info-box box-indigo">
+                        <h3>Interventions</h3>
+                        <ul id="interventionList"></ul>
+                    </div>
+                    <div>
+                        <div class="copy-header">
+                            <span class="copy-label">Generated Treatment Record Text</span>
+                            <button id="btnCopy" class="btn-copy-small">Copy to Clipboard</button>
+                        </div>
+                        <textarea id="generatedText" class="generated-text" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+
+        <div id="emptyState" class="empty-state">
+            <p>Please enter an operation date (dd/mm/yyyy) and click Enter to begin.</p>
+        </div>
+    </div>
+
+    <div id="thrToast" class="thr-toast"></div>
+</div>
+
+<script data-skip-moving="true">
+(function() {
+
+    function initTHRTool() {
+
+        var APPROACH_NAMES = { posterior: "Posterior", anterior: "Anterior / anterolateral", lateral: "Direct lateral" };
+        var GROUP_NAMES = { geriatric: "Geriatric / general", active: "Physically active / young" };
+        var WB_TEXT = {
+            none: null,
+            WBAT: "Weight-bearing: WBAT as ordered by surgeon",
+            PWB: "Weight-bearing: PWB as ordered by surgeon",
+            TTWB: "Weight-bearing: TTWB / NWB as ordered by surgeon"
+        };
+
+        // --- DATA (PWH-PT-PC-PT-027 v01, Total hip replacement protocol; wording and point order as in protocol) ---
+        // Lines starting with ">" are sub-points of the point above; lines ending with ":" are headings.
+        var PRECAUTIONS = {
+            posterior: [
+                "Posterior approach:",
+                "No hip flexion > 90",
+                "No hip adduction and internal rotation beyond neutral",
+                "No combinations of the above motions"
+            ],
+            anterior: [
+                "Anterior/ anterolateral approach:",
+                "No hip extension beyond neutral",
+                "No hip external rotation beyond neutral",
+                "No hip abduction or adduction"
+            ],
+            lateral: [
+                "Direct lateral approach:",
+                "No hip extension beyond neutral",
+                "No hip external rotation beyond neutral",
+                "No hip abduction or adduction"
+            ]
+        };
+        var PRECAUTIONS_COMMON = [
+            "Time of precaution: 6 weeks",
+            "Precautions such as prop-up angle, proper use of abduction pillow and/or hi-lo chair should comply with current existing protocol in PWH"
+        ];
+        // Hip AAROM/AROM ranges. Anterior group: "Hip abduction range per tolerance" omitted,
+        // following the summary-box precaution (no abduction/adduction) pending team clarification.
+        var AROM_RANGE = {
+            posterior: ["> Hip flexion < 90 degrees", "> Hip abduction, extension range per tolerance", "> No adduction past midline"],
+            anterior: ["> Extension < neutral", "> Hip flexion range per tolerance"],
+            lateral: ["> Extension < neutral", "> Hip flexion range per tolerance"]
+        };
+
+        var P1_GOALS = [
+            "Protect healing tissue",
+            "Pain and edema control",
+            "DVT prevention",
+            "Improve pain-free ROM within precautions",
+            "Normalize muscle activation",
+            "Independent household ambulation and ADL without walking aid",
+            "Basic functional training"
+        ];
+        function p1Interventions(approach) {
+            return [
+                "Deep breathing and coughing (B&C) exercises",
+                "Ankle and toes exercise",
+                "Cryotherapy + PEMF",
+                "Manual therapy for lower limb pain and edema control",
+                "Hip AAROM/ AROM exercises"
+            ].concat(AROM_RANGE[approach], [
+                "Isometric quadriceps, hamstrings, gluteal, hip abductors and adductors exercises",
+                "Hook lying marches, heel slides",
+                "Bridging exercises",
+                "Upper limb aerobic exercises",
+                "Education to patient and caregiver in arthroplasty precautions, skills of proper transfer and ambulation support",
+                "Review transfer skills and encourage early mobilization",
+                "Weight shifting and gait training",
+                "> Gradual weaning of walking aid between weeks 2-3 if stable and symmetrical gait pattern",
+                "NMES to quadriceps with static quad exercise",
+                "NMES to hip abductors if wound heals",
+                "Standing hamstring curls",
+                "Passive hip stretching within precautions",
+                "Stairs and slope training"
+            ]);
+        }
+        var P1_PROG_GOALS = [
+            "Progressively improve strength of LL",
+            "Early start of balance training",
+            "Early start of endurance and cardiovascular training"
+        ];
+        // Anterior group: "Hip abduction in side-lying (except direct lateral approach)" omitted,
+        // following the summary-box precaution pending team clarification.
+        var P1_PROG_APPROACH = {
+            posterior: ["> Hip abduction in side-lying", "> Hip extension in prone", "> Clamshell exercises with pillow between knees blocking adduction", "> Bridge progressions (DL to SL)"],
+            anterior: ["> Straight leg raise exercise in supine with hip flexion"],
+            lateral: ["> Straight leg raise exercise in supine with hip flexion"]
+        };
+        function p1Progression(approach) {
+            return ["Progression:", "Hip AROM exercise with long arc/free-weight strengthening"].concat(P1_PROG_APPROACH[approach], [
+                "Monark cycling without resistance, raised seat, hip flexion <90 degree",
+                "Standing hip marching",
+                "Step Ups (forward, lateral) & Step Downs",
+                "Calf raise",
+                "SCIFIT with backseat posteriorly tilted, hip flexion < 90",
+                "Single leg balance on level ground",
+                "Aquatic therapy once wound healed with MD clearance"
+            ]);
+        }
+        var P1_CRITERIA = [
+            "Criteria to progress:",
+            "Normalized gait pattern for household distances without aids",
+            "Minimal to no reactive pain and swelling with ADLs and exercises",
+            "Muscle activation and isolation is normalized"
+        ];
+
+        var P2_GOALS = [
+            "Restore full PROM and AROM (with guarded progression)",
+            "Further enhancing strength of LL musculature",
+            "Normalize postural/pelvic control",
+            "Advanced balance training",
+            "Normalize walking speed for community distances",
+            "Tolerate ADLs without pain or limitation"
+        ];
+        var P2_PRECAUTIONS = ["Take off all directional precaution specific for different operation approach"];
+        var P2_INTERVENTIONS = [
+            "Soft tissue mobilization esp. TFL, adductors and rectus femoris",
+            "Mini-squats to 70 degree of hip flexion",
+            "Resisted side stepping (+ TheraBand around knees > ankle)",
+            "Standing hip extension and abduction (+ TheraBand around knees > ankle)",
+            "Minipress machine",
+            "SCIFIT machine",
+            "Single leg proprioceptive training on unstable surface"
+        ];
+        var P2_FROM_WK10 = [
+            "Exercise progression from 10/52:",
+            "Monark cycling with light resistance",
+            "Hip external rotation strengthening clamshells, quadruped hydrants",
+            "Mini-squat with hip flexion > 70 degrees",
+            "Backward walking",
+            "Single leg proprioceptive training on unstable surface with perturbation"
+        ];
+        var P2_ACTIVE_EX = [
+            "Exercise progression for physically active young patients:",
+            "Machine leg press",
+            "Machine hamstring curl and quadriceps strengthening",
+            "4-way hip strengthening machine",
+            "Calf-raise with leg press machine",
+            "Treadmill (brisk walking program)"
+        ];
+        var P2_ACTIVE_CRITERIA = [
+            "Criteria to progress for physically active young patients:",
+            "Symmetrical and pain-free hip ROM to meet the demands of patient\u2019s activities",
+            "Good (>4/5) lower extremity strength",
+            "Symmetrical DL squat to 70\u00B0 of knee flex",
+            "Good quality movement as graded on Forward Step Down Test using 8-inch stool",
+            "Normalized gait pattern for community distances of ambulation"
+        ];
+        var GERIATRIC_DISCHARGE = [
+            "Criteria to discharge for geriatric patients:",
+            "Symmetrical and pain-free hip ROM to meet the demands of patient\u2019s activities",
+            "Good (>4/5) lower extremity strength",
+            "Symmetrical DL squat to 70\u00B0 of knee flex",
+            "Normalized gait pattern for community distances of ambulation",
+            "Age and gender-matched 30-second chair stand test performance and Timed Up and Go Test < 13.5 seconds"
+        ];
+
+        var P3_GOALS = [
+            "Correct compensatory movement patterns with higher level multi\u2013planar strengthening activities",
+            "Optimize neuromuscular control and proprioception",
+            "Increase volume/intensity of aerobic activities",
+            "Gradual return to recreational sports (low-moderate impact)"
+        ];
+        var P3_INTERVENTIONS = [
+            "Passive hip stretching if full PROM is not achieved",
+            "Continue progressive LL strengthening: Slow to fast, simple to complex, stable to unstable, low to high force",
+            "> DL to SL strengthening, for machine strengthening",
+            "> Single-leg squat with weight",
+            "Progress core stability tasks with emphasis on rotational and side-support tasks",
+            "> Side planks, cable crossovers, kneeling chops/lifts, plank over BOSU ball",
+            "Proprioception: Vary surfaces, add perturbations, include variety of positions",
+            "Cardiovascular training",
+            "> Resisted elliptical"
+        ];
+        var P3_CRITERIA = [
+            "Criteria for return to low-moderate impact sports:",
+            "Full, functional, pain-free ROM",
+            ">80% LSI quad, hamstring, glute strength",
+            "10 forward and lateral step downs from 8-inch step with proper alignment",
+            "Demonstrates ability to simulate functional sport-specific movement",
+            "Squat 150% body weight in leg press with 90-degree hip flexion",
+            "Criteria for return to high impact sports:",
+            "MD clearance is required at the last check-up",
+            ">90% LSI quad, hamstring, glute strength",
+            ">90% BW with SL leg press",
+            "Demonstrates ability to simulate functional sport-specific movement",
+            "Patient reported outcome measures (NGRCS): Score \u2265 9/10"
+        ];
+
+        var PHASE_RANK = { p1: 1, p1prog: 1.5, p2: 2, p3: 3 };
+
+        // --- BUILD CONTENT FOR A PHASE ---
+        function buildContent(phase, weekNum, approach, group) {
+            var d = { phase: "", goals: [], precautions: [], interventions: [], outcomes: [] };
+            if (phase === "p1" || phase === "p1prog") {
+                d.phase = phase === "p1" ? "Phase 1 \u2013 Early phase (Post-op 0\u20136/52)" : "Phase 1 \u2013 Early phase, progression (Post-op 0\u20136/52)";
+                d.goals = P1_GOALS.slice();
+                d.precautions = PRECAUTIONS[approach].concat(PRECAUTIONS_COMMON);
+                d.interventions = p1Interventions(approach);
+                if (phase === "p1prog") {
+                    d.goals = d.goals.concat(P1_PROG_GOALS);
+                    d.interventions = d.interventions.concat(p1Progression(approach));
+                }
+                d.outcomes = P1_CRITERIA.slice();
+            } else if (phase === "p2") {
+                d.phase = "Phase 2 \u2013 Intermediate strengthening phase (Post-op 7\u201312/52)";
+                if (weekNum >= 12 && group === "geriatric") d.phase += " \u2013 rehabilitation period terminates at 3 months post-op";
+                d.goals = P2_GOALS.slice();
+                d.precautions = P2_PRECAUTIONS.slice();
+                d.interventions = P2_INTERVENTIONS.slice();
+                if (weekNum >= 10) d.interventions = d.interventions.concat(P2_FROM_WK10);
+                if (group === "active") {
+                    d.interventions = d.interventions.concat(P2_ACTIVE_EX);
+                    d.outcomes = P2_ACTIVE_CRITERIA.slice();
+                } else {
+                    d.outcomes = GERIATRIC_DISCHARGE.slice();
+                }
+            } else {
+                d.phase = "Phase 3 \u2013 Return to recreational sports phase (Post-op 13\u201324/52)";
+                if (weekNum >= 24) d.phase += " \u2013 extended up to 1 year if required";
+                d.goals = P3_GOALS.slice();
+                d.precautions = [];
+                d.interventions = P3_INTERVENTIONS.slice();
+                d.outcomes = P3_CRITERIA.slice();
+            }
+            return d;
+        }
+
+        // --- HELPERS ---
+        function formatDateDDMMYYYY(dateObj) {
+            var day = String(dateObj.getDate()).padStart(2, '0');
+            var month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            return day + '/' + month + '/' + dateObj.getFullYear();
+        }
+
+        function renderList(elementId, items) {
+            var list = document.getElementById(elementId);
+            if (!list) return;
+            list.innerHTML = '';
+            if (!items || items.length === 0) {
+                list.innerHTML = '<li style="color:#999; font-style:italic;">Nil</li>';
+                return;
+            }
+            items.forEach(function(item) {
+                var li = document.createElement('li');
+                if (/^> /.test(item)) {
+                    li.innerText = item.slice(2);
+                    li.style.marginLeft = '18px'; li.style.listStyleType = 'circle';
+                } else {
+                    li.innerText = item;
+                    if (/:$/.test(item)) { li.style.fontWeight = 'bold'; li.style.listStyle = 'none'; li.style.marginLeft = '-16px'; }
+                }
+                list.appendChild(li);
+            });
+        }
+
+        function listText(items) {
+            if (!items || items.length === 0) return '- Nil';
+            return items.map(function(i) {
+                if (/^> /.test(i)) return '   o ' + i.slice(2);
+                return /:$/.test(i) ? i : '- ' + i;
+            }).join('\n');
+        }
+
+        function showToast(message) {
+            var toast = document.getElementById('thrToast');
+            if (!toast) return;
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(function() { toast.classList.remove('show'); }, 3000);
+        }
+
+        function handleDateInput(e) {
+            var input = e.target;
+            if (e.inputType === 'deleteContentBackward') return;
+            if (/^\d{2}\/\d{2}\/\d{4}$/.test(e.target.value)) { generateProtocol(); return; }
+            var value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) value = value.slice(0, 2) + '/' + value.slice(2);
+            if (value.length >= 5) value = value.slice(0, 5) + '/' + value.slice(5);
+            input.value = value.slice(0, 10);
+            if (input.value.length === 10) generateProtocol();
+        }
+
+        var PHASE_LABEL = { p1: "Phase 1", p1prog: "Phase 1 (progression)", p2: "Phase 2", p3: "Phase 3" };
+
+        // --- CORE ---
+        function generateProtocol() {
+            var dateInputStr = document.getElementById('opDate').value;
+            var errorMsg = document.getElementById('dateError');
+            var match = dateInputStr.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+            if (!match) {
+                errorMsg.innerText = "Please enter a valid date in dd/mm/yyyy format.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+            errorMsg.style.display = 'none';
+
+            var day = parseInt(match[1], 10), month = parseInt(match[2], 10) - 1, year = parseInt(match[3], 10);
+            var opDate = new Date(year, month, day);
+            var today = new Date();
+            if (opDate.getFullYear() !== year || opDate.getMonth() !== month || opDate.getDate() !== day) {
+                errorMsg.innerText = "Invalid calendar date.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+            opDate.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            var daysPast = Math.round((today - opDate) / 86400000);
+            if (daysPast < 0) {
+                errorMsg.innerText = "Operation date cannot be in the future.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            var approach = document.getElementById('approach').value;
+            var group = document.getElementById('group').value;
+            var wb = document.getElementById('wb').value;
+            var weekNum = Math.floor(daysPast / 7);
+            var startDay = weekNum * 7, endDay = startDay + 6;
+
+            // Date-based phase by completed post-op week: week 0-6 (day 0-48) Phase 1,
+            // week 7-12 (day 49-90) Phase 2, week 13+ (day 91+) Phase 3 (active) or Phase 2 endpoint (geriatric)
+            var datePhase = weekNum <= 6 ? "p1" : (weekNum <= 12 ? "p2" : (group === "active" ? "p3" : "p2"));
+            var phaseSel = document.getElementById('phaseSel').value;
+            var phase = datePhase, phaseNote = '';
+            if (phaseSel !== 'auto') {
+                if (phaseSel === 'p3' && group !== 'active') {
+                    showToast('Phase 3 is for physically active young patients only. Using date-based phase.');
+                } else if (PHASE_RANK[phaseSel] > Math.max(PHASE_RANK[datePhase], datePhase === 'p1' ? 1.5 : 0)) {
+                    showToast('Phase cannot be ahead of the date-based phase. Using date-based phase.');
+                } else {
+                    phase = phaseSel;
+                    if (PHASE_RANK[phase] < PHASE_RANK[datePhase]) {
+                        phaseNote = 'Held in ' + PHASE_LABEL[phase] + ' by therapist (date-based: ' + PHASE_LABEL[datePhase] + '); criteria to progress not yet met';
+                    } else if (phase === 'p1prog') {
+                        phaseNote = 'Phase 1 progression selected by therapist';
+                    }
+                }
+            }
+            var data = buildContent(phase, weekNum, approach, group);
+            if (phaseNote && phaseNote.indexOf('Held') === 0) data.phase += ' \u2013 HELD';
+            if (WB_TEXT[wb]) data.precautions.unshift(WB_TEXT[wb]);
+            var showNorms = data.outcomes.indexOf(GERIATRIC_DISCHARGE[0]) !== -1;
+            document.getElementById('cstNorms').style.display = showNorms ? 'block' : 'none';
+
+            document.getElementById('emptyState').style.display = 'none';
+            var out = document.getElementById('outputContainer');
+            out.classList.add('visible');
+            out.style.animation = 'none'; out.offsetHeight; out.style.animation = 'fadeIn 0.5s ease-in-out';
+
+            document.getElementById('weekHeader').innerText = 'Post-Operation ' + weekNum + ' Week';
+            document.getElementById('dayRange').innerText = data.phase + '  (Day ' + startDay + '\u2013' + endDay + ')';
+            document.getElementById('daysPastBadge').innerText = daysPast + ' Days Post-Op';
+
+            renderList('goalList', data.goals);
+            renderList('interventionList', data.interventions);
+            renderList('precautionList', data.precautions);
+            renderList('outcomeList', data.outcomes);
+
+            var t = 'PWH PHYSIO TOTAL HIP REPLACEMENT REHABILITATION RECORD\n';
+            t += 'Date: ' + formatDateDDMMYYYY(today) + '\n';
+            t += 'Operation Date: ' + formatDateDDMMYYYY(opDate) + '\n';
+            t += 'Approach: ' + APPROACH_NAMES[approach] + '\n';
+            t += 'Patient group: ' + GROUP_NAMES[group] + '\n';
+            t += 'Timeline: Post-Op ' + weekNum + ' Week (' + daysPast + ' days) \u2013 ' + data.phase + '\n';
+            if (phaseNote) t += phaseNote + '\n';
+            t += '\nGOALS:\n' + listText(data.goals) + '\n\n';
+            t += 'PRECAUTIONS:\n' + listText(data.precautions) + '\n\n';
+            t += 'INTERVENTIONS:\n' + listText(data.interventions) + '\n\n';
+            t += 'CRITERIA:\n' + listText(data.outcomes);
+            document.getElementById('generatedText').value = t;
+        }
+
+        function copyText() {
+            var ta = document.getElementById("generatedText");
+            ta.select(); ta.setSelectionRange(0, 99999);
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(ta.value)
+                    .then(function() { showToast("Copied to clipboard!"); })
+                    .catch(function() { fallbackCopy(); });
+            } else { fallbackCopy(); }
+        }
+        function fallbackCopy() {
+            try {
+                showToast(document.execCommand('copy') ? "Copied to clipboard!" : "Could not copy. Please select text and press Ctrl+C.");
+            } catch (err) { showToast("Could not copy. Please select text and press Ctrl+C."); }
+        }
+
+        var opDateInput = document.getElementById('opDate');
+        opDateInput.addEventListener('input', handleDateInput);
+        opDateInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') generateProtocol(); });
+        document.getElementById('btnGenerate').addEventListener('click', generateProtocol);
+        document.getElementById('btnCopy').addEventListener('click', copyText);
+        ['approach', 'group', 'wb', 'phaseSel'].forEach(function(id) {
+            document.getElementById(id).addEventListener('change', function() {
+                if (document.getElementById('outputContainer').classList.contains('visible')) generateProtocol();
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTHRTool);
+    } else {
+        initTHRTool();
+    }
+})();
+</script>
+</section>
