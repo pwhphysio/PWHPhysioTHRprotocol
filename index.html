@@ -272,15 +272,6 @@
                     </select>
                 </div>
                 <div class="thr-field">
-                    <label class="thr-label" for="wb">Weight-bearing (per surgeon)</label>
-                    <select id="wb" class="thr-input">
-                        <option value="none">No restriction stated (protocol default)</option>
-                        <option value="WBAT">WBAT as ordered by surgeon</option>
-                        <option value="PWB">PWB as ordered by surgeon</option>
-                        <option value="TTWB">TTWB / NWB as ordered by surgeon</option>
-                    </select>
-                </div>
-                <div class="thr-field">
                     <label class="thr-label" for="phaseSel">Phase</label>
                     <select id="phaseSel" class="thr-input">
                         <option value="auto">Auto (by operation date)</option>
@@ -363,12 +354,6 @@
 
         var APPROACH_NAMES = { posterior: "Posterior", anterior: "Anterior / anterolateral", lateral: "Direct lateral" };
         var GROUP_NAMES = { geriatric: "Geriatric / general", active: "Physically active / young" };
-        var WB_TEXT = {
-            none: null,
-            WBAT: "Weight-bearing: WBAT as ordered by surgeon",
-            PWB: "Weight-bearing: PWB as ordered by surgeon",
-            TTWB: "Weight-bearing: TTWB / NWB as ordered by surgeon"
-        };
 
         // --- DATA (PWH-PT-PC-PT-027 v01, Total hip replacement protocol; wording and point order as in protocol) ---
         // Lines starting with ">" are sub-points of the point above; lines ending with ":" are headings.
@@ -383,7 +368,7 @@
                 "Anterior/ anterolateral approach:",
                 "No hip extension beyond neutral",
                 "No hip external rotation beyond neutral",
-                "No hip abduction or adduction"
+                "No hip adduction"
             ],
             lateral: [
                 "Direct lateral approach:",
@@ -414,6 +399,7 @@
             "Basic functional training"
         ];
         function p1Interventions(approach) {
+            var anterior = (approach === 'anterior');
             return [
                 "Deep breathing and coughing (B&C) exercises",
                 "Ankle and toes exercise",
@@ -421,7 +407,7 @@
                 "Manual therapy for lower limb pain and edema control",
                 "Hip AAROM/ AROM exercises"
             ].concat(AROM_RANGE[approach], [
-                "Isometric quadriceps, hamstrings, gluteal, hip abductors and adductors exercises",
+                anterior ? "Isometric quadriceps, hamstrings, gluteal, hip abductors and adductors exercises (hip abductors and adductors if allowed by surgeon)" : "Isometric quadriceps, hamstrings, gluteal, hip abductors and adductors exercises",
                 "Hook lying marches, heel slides",
                 "Bridging exercises",
                 "Upper limb aerobic exercises",
@@ -430,7 +416,7 @@
                 "Weight shifting and gait training",
                 "> Gradual weaning of walking aid between weeks 2-3 if stable and symmetrical gait pattern",
                 "NMES to quadriceps with static quad exercise",
-                "NMES to hip abductors if wound heals",
+                anterior ? "NMES to hip abductors if wound heals and if allowed by surgeon" : "NMES to hip abductors if wound heals",
                 "Standing hamstring curls",
                 "Passive hip stretching within precautions",
                 "Stairs and slope training"
@@ -676,7 +662,6 @@
 
             var approach = document.getElementById('approach').value;
             var group = document.getElementById('group').value;
-            var wb = document.getElementById('wb').value;
             var weekNum = Math.floor(daysPast / 7);
             var startDay = weekNum * 7, endDay = startDay + 6;
 
@@ -701,7 +686,6 @@
             }
             var data = buildContent(phase, weekNum, approach, group);
             if (phaseNote && phaseNote.indexOf('Held') === 0) data.phase += ' \u2013 HELD';
-            if (WB_TEXT[wb]) data.precautions.unshift(WB_TEXT[wb]);
             var showNorms = data.outcomes.indexOf(GERIATRIC_DISCHARGE[0]) !== -1;
             document.getElementById('cstNorms').style.display = showNorms ? 'block' : 'none';
 
@@ -753,7 +737,7 @@
         opDateInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') generateProtocol(); });
         document.getElementById('btnGenerate').addEventListener('click', generateProtocol);
         document.getElementById('btnCopy').addEventListener('click', copyText);
-        ['approach', 'group', 'wb', 'phaseSel'].forEach(function(id) {
+        ['approach', 'group', 'phaseSel'].forEach(function(id) {
             document.getElementById(id).addEventListener('change', function() {
                 if (document.getElementById('outputContainer').classList.contains('visible')) generateProtocol();
             });
