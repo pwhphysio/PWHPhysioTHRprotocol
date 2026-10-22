@@ -309,7 +309,7 @@
                         
                         <ul id="outcomeList"></ul>
                         <details id="cstNorms" class="thr-norms" style="display:none;">
-                            <summary>Show HK norms: 30-second chair stand test</summary>
+                            <summary>Show HK norms: 30-second chair stand test (reference only)</summary>
                             <p>Normative values of Hong Kong community-dwelling elder (mean &plusmn; SD). Chair with a 17-inch seat height; arms crossed across chest.</p>
                             <table>
                                 <tr><th>Age (yr)</th><th>Female</th><th>Male</th></tr>
@@ -381,11 +381,10 @@
             "Time of precaution: 6 weeks",
             "Precautions such as prop-up angle, proper use of abduction pillow and/or hi-lo chair should comply with current existing protocol in PWH"
         ];
-        // Hip AAROM/AROM ranges. Anterior group: "Hip abduction range per tolerance" omitted,
-        // following the summary-box precaution (no abduction/adduction) pending team clarification.
+        // Hip AAROM/AROM ranges. Anterior/anterolateral include abduction per tolerance (Jessica).
         var AROM_RANGE = {
             posterior: ["> Hip flexion < 90 degrees", "> Hip abduction, extension range per tolerance", "> No adduction past midline"],
-            anterior: ["> Extension < neutral", "> Hip flexion range per tolerance"],
+            anterior: ["> Extension < neutral", "> Hip flexion range per tolerance", "> Hip abduction range per tolerance"],
             lateral: ["> Extension < neutral", "> Hip flexion range per tolerance"]
         };
 
@@ -399,15 +398,28 @@
             "Basic functional training"
         ];
         function p1Interventions(approach) {
-            var anterior = (approach === 'anterior');
-            return [
+            // Anterior: abductor iso/NMES if allowed by surgeon.
+            // Direct lateral (approved): no hip-abductor isometrics / no NMES to abductors; keep quads/hams/gluteals + NMES quads.
+            var isometric;
+            var nmesAbd;
+            if (approach === 'anterior') {
+                isometric = "Isometric quadriceps, hamstrings, gluteal, hip abductors and adductors exercises (hip abductors and adductors if allowed by surgeon)";
+                nmesAbd = "NMES to hip abductors if wound heals and if allowed by surgeon";
+            } else if (approach === 'lateral') {
+                isometric = "Isometric quadriceps, hamstrings and gluteal exercises";
+                nmesAbd = null;
+            } else {
+                isometric = "Isometric quadriceps, hamstrings, gluteal, hip abductors and adductors exercises";
+                nmesAbd = "NMES to hip abductors if wound heals";
+            }
+            var items = [
                 "Deep breathing and coughing (B&C) exercises",
                 "Ankle and toes exercise",
                 "Cryotherapy + PEMF",
                 "Manual therapy for lower limb pain and edema control",
                 "Hip AAROM/ AROM exercises"
             ].concat(AROM_RANGE[approach], [
-                anterior ? "Isometric quadriceps, hamstrings, gluteal, hip abductors and adductors exercises (hip abductors and adductors if allowed by surgeon)" : "Isometric quadriceps, hamstrings, gluteal, hip abductors and adductors exercises",
+                isometric,
                 "Hook lying marches, heel slides",
                 "Bridging exercises",
                 "Upper limb aerobic exercises",
@@ -415,23 +427,25 @@
                 "Review transfer skills and encourage early mobilization",
                 "Weight shifting and gait training",
                 "> Gradual weaning of walking aid between weeks 2-3 if stable and symmetrical gait pattern",
-                "NMES to quadriceps with static quad exercise",
-                anterior ? "NMES to hip abductors if wound heals and if allowed by surgeon" : "NMES to hip abductors if wound heals",
+                "NMES to quadriceps with static quad exercise"
+            ]);
+            if (nmesAbd) items.push(nmesAbd);
+            items = items.concat([
                 "Standing hamstring curls",
                 "Passive hip stretching within precautions",
                 "Stairs and slope training"
             ]);
+            return items;
         }
         var P1_PROG_GOALS = [
             "Progressively improve strength of LL",
             "Early start of balance training",
             "Early start of endurance and cardiovascular training"
         ];
-        // Anterior group: "Hip abduction in side-lying (except direct lateral approach)" omitted,
-        // following the summary-box precaution pending team clarification.
+        // Anterior/anterolateral: hip abduction in side-lying (Jessica). DL progression: no side-lying abduction.
         var P1_PROG_APPROACH = {
             posterior: ["> Hip abduction in side-lying", "> Hip extension in prone", "> Clamshell exercises with pillow between knees blocking adduction", "> Bridge progressions (DL to SL)"],
-            anterior: ["> Straight leg raise exercise in supine with hip flexion"],
+            anterior: ["> Straight leg raise exercise in supine with hip flexion", "> Hip abduction in side-lying"],
             lateral: ["> Straight leg raise exercise in supine with hip flexion"]
         };
         function p1Progression(approach) {
@@ -532,7 +546,7 @@
             ">90% LSI quad, hamstring, glute strength",
             ">90% BW with SL leg press",
             "Demonstrates ability to simulate functional sport-specific movement",
-            "Patient reported outcome measures (NGRCS): Score \u2265 9/10"
+            "Patient reported outcome measures: Score \u2265 90%"
         ];
 
         var PHASE_RANK = { p1: 1, p1prog: 1.5, p2: 2, p3: 3 };
