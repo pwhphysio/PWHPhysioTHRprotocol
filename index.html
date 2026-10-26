@@ -331,7 +331,7 @@
                     </div>
                     <div>
                         <div class="copy-header">
-                            <span class="copy-label">Generated Treatment Record Text</span>
+                            <span class="copy-label">Intervention text (for copy)</span>
                             <button id="btnCopy" class="btn-copy-small">Copy to Clipboard</button>
                         </div>
                         <textarea id="generatedText" class="generated-text" readonly></textarea>
@@ -717,18 +717,8 @@
             renderList('precautionList', data.precautions);
             renderList('outcomeList', data.outcomes);
 
-            var t = 'PWH PHYSIO TOTAL HIP REPLACEMENT REHABILITATION RECORD\n';
-            t += 'Date: ' + formatDateDDMMYYYY(today) + '\n';
-            t += 'Operation Date: ' + formatDateDDMMYYYY(opDate) + '\n';
-            t += 'Approach: ' + APPROACH_NAMES[approach] + '\n';
-            t += 'Patient group: ' + GROUP_NAMES[group] + '\n';
-            t += 'Timeline: Post-Op ' + weekNum + ' Week (' + daysPast + ' days) \u2013 ' + data.phase + '\n';
-            if (phaseNote) t += phaseNote + '\n';
-            t += '\nGOALS:\n' + listText(data.goals) + '\n\n';
-            t += 'PRECAUTIONS:\n' + listText(data.precautions) + '\n\n';
-            t += 'INTERVENTIONS:\n' + listText(data.interventions) + '\n\n';
-            t += 'CRITERIA:\n' + listText(data.outcomes);
-            document.getElementById('generatedText').value = t;
+            // Copy box: interventions only (goals/criteria/header stay on-screen panels)
+            document.getElementById('generatedText').value = 'INTERVENTIONS:\n' + listText(data.interventions);
         }
 
         function copyText() {
